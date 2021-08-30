@@ -1,8 +1,14 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import { useQuery, gql } from "@apollo/client";
+import { GET_ALL_EPISODES } from "./GraphQL/Queries";
 
 function App() {
+  const { error, loading, data } = useQuery(GET_ALL_EPISODES);
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
   return (
     <div className="App">
       <header className="App-header">
