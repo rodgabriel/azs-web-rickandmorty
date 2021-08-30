@@ -15,7 +15,7 @@ export const GET_ALL_EPISODES = gql`
   }
 `;
 
-export const GET_EPISODE_BY_ID = (id) => {
+export const GET_EPISODE_BY_ID = (id: string) => {
   return gql`
         query {
             episode (id: ${id}) {
