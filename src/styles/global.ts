@@ -18,11 +18,16 @@ const GlobalStyles = createGlobalStyle`
         font-size: 1.6rem;
         font-family: 'Oxygen', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         font-weight: normal;
+        color: white;
         overflow-x: hidden;
     }
 
     #root {
         height: auto;
+    }
+
+    a {
+        text-decoration: none;
     }
 
 `;
