@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import { useQuery, gql } from "@apollo/client";
-import { GET_ALL_EPISODES } from "./GraphQL/Queries";
+import { GET_ALL_EPISODES, GET_EPISODE_BY_ID } from "./GraphQL/Queries";
 
 function App() {
-  const { error, loading, data } = useQuery(GET_ALL_EPISODES);
+  const { error, loading, data } = useQuery(GET_EPISODE_BY_ID(1));
   useEffect(() => {
     console.log(data);
   }, [data]);
