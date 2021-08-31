@@ -2,6 +2,7 @@ const theme = {
   pallete: {
     primary: "#FAFD7F",
     secondary: "#A6EEE6",
+    base: "#091332",
     accent: "#FB6467",
     light: "#FFFFFF",
     dark: "#232323",

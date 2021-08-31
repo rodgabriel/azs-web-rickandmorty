@@ -20,6 +20,9 @@ const GlobalStyles = createGlobalStyle`
         font-weight: normal;
         color: white;
         overflow-x: hidden;
+      
+        background: #091332;
+        
     }
 
     #root {
@@ -27,7 +30,9 @@ const GlobalStyles = createGlobalStyle`
     }
 
     a {
-        text-decoration: none;
+        text-decoration: none !important;
+        color: #131313;
+        background: transparent !important;
     }
 
 `;

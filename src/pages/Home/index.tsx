@@ -1,31 +1,37 @@
 import { useEffect, useState } from "react";
-import { Wrapper, ImgLogo, ImgHero } from "./styles";
+import { Wrapper } from "./styles";
 import { useQuery, gql } from "@apollo/client";
+import { AnimatePresence } from "framer-motion";
 import { GET_ALL_EPISODES } from "graphQL/queries";
 
-import Logo from "assets/images/logo.png";
-import Hero from "assets/images/hero.png";
 import List from "components/List";
+import Hero from "components/Hero";
 
 const Home = () => {
   const [allEpisodes, setAllEpisodes] = useState([]);
+  const [paginationInfo, setPaginationInfo] = useState({});
+
   const { loading, data } = useQuery(GET_ALL_EPISODES);
 
   useEffect(() => {
     if (data?.episodes) {
       setAllEpisodes(data.episodes.results);
     }
+    if (data?.info) {
+      setPaginationInfo(data.info);
+    }
   }, [data]);
 
   return (
-    <Wrapper flexDirection="column" backgroundColor="#1E003E">
-      <ImgLogo src={Logo} margin="1rem auto" />
-      <Wrapper flexDirection="column">
-        <h1>Episódios</h1>
-        {/* <ImgHero src={Hero} /> */}
-        <List items={allEpisodes} loading={loading} />
-      </Wrapper>
-    </Wrapper>
+    <>
+      <Hero />
+      <List
+        title="Episódios"
+        items={allEpisodes}
+        loading={loading}
+        paginationInfo={paginationInfo}
+      />
+    </>
   );
 };
 
