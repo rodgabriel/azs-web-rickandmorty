@@ -44,7 +44,7 @@ export const Card = styled(motion.div)`
   background: ${(props) => props.theme.pallete.primary};
   border-radius: 1.4rem;
   padding: 1.5rem;
-  box-shadow: 0 3px 18px -6px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 3px 18px -3px rgba(0, 0, 0, 0.25);
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.445, 0.05, 0.55, 0.95);
   color: black;
@@ -94,5 +94,31 @@ export const Card = styled(motion.div)`
   &:hover {
     filter: saturate(120%);
     transform: scale(1.025) !important;
+  }
+`;
+
+export const PaginationWrapper = styled.div`
+  display: flex;
+  max-width: 28rem;
+
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 4rem;
+    height: 4rem;
+    background: ${(props) => props.theme.pallete.base + "66"};
+
+    border: 1px solid #fff6;
+    text-align: center;
+    font-size: 1.8rem;
+    color: ${(props) => props.theme.pallete.light};
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s all ease-in-out;
+
+    &:hover {
+      filter: saturate(120%) brightness(150%);
+    }
   }
 `;

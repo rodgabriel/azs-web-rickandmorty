@@ -1,14 +1,18 @@
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import padNumber from "helpers/padNumber";
 import { Link } from "react-router-dom";
+import { useQuery } from "@apollo/client";
+import { GET_ALL_EPISODES } from "graphQL/queries";
 
+// helpers
+import padNumber from "helpers/padNumber";
+
+// components
+import Pagination from "./pagination";
 import { Container, Card } from "./styles";
 
 interface Props {
   title?: string;
-  items: Array<Episode>;
-  loading: boolean;
-  paginationInfo: any;
 }
 
 type Episode = {
@@ -18,7 +22,42 @@ type Episode = {
   characters: Array<any>;
 };
 
-const List = ({ title, loading, items, paginationInfo }: Props) => {
+export type TPagination = {
+  current: number;
+  pages: number;
+  prev: number | null;
+  next: number | null;
+  count: number;
+};
+
+const initial = {
+  opacity: 0,
+  scale: 0.975,
+  y: 150,
+};
+
+const animate = {
+  opacity: 1,
+  scale: 1,
+  y: 0,
+};
+
+const container = {
+  hidden: { opacity: 1 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const child = {
+  hidden: { opacity: 0, y: 100 },
+  show: { opacity: 1, y: 0 },
+};
+
+const List = ({ title }: Props) => {
   const formatDate = (date: string): string => {
     return new Date(date).toLocaleDateString("pt-br", {
       day: "2-digit",
@@ -27,34 +66,34 @@ const List = ({ title, loading, items, paginationInfo }: Props) => {
     });
   };
 
-  const initial = {
-    opacity: 0,
-    scale: 0.975,
-    y: 150,
-  };
+  const [allEpisodes, setAllEpisodes] = useState<Array<Episode>>([]);
+  const [paginationInfo, setPaginationInfo] = useState<TPagination>({
+    current: 1,
+    count: 0,
+    pages: 0,
+    prev: null,
+    next: null,
+  });
 
-  const animate = {
-    opacity: 1,
-    scale: 1,
-    y: 0,
-  };
+  const { loading, data } = useQuery(GET_ALL_EPISODES, {
+    variables: { page: paginationInfo.current },
+  });
 
-  const container = {
-    hidden: { opacity: 1 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
+  useEffect(() => {
+    if (data?.episodes) {
+      setAllEpisodes(data.episodes.results);
+    }
+    if (data?.episodes.info) {
+      setPaginationInfo({
+        ...data.episodes.info,
+        current: data.episodes.info.next
+          ? data.episodes.info.next - 1
+          : data.episodes.info.pages,
+      });
+    }
+  }, [data]);
 
-  const child = {
-    hidden: { opacity: 0, y: 100 },
-    show: { opacity: 1, y: 0 },
-  };
-
-  console.log(paginationInfo);
+  console.log(data?.episodes?.info);
 
   return (
     <Container
@@ -72,25 +111,29 @@ const List = ({ title, loading, items, paginationInfo }: Props) => {
         initial="hidden"
         animate="show"
       >
-        {items.map((item) => (
-          <Link to={`/episode/${item.id}`}>
+        {allEpisodes.map((episode) => (
+          <Link to={`/episode/${episode.id}`}>
             <Card variants={child}>
               <div className="ep-number">
-                <p>{padNumber(item.id)}</p>
+                <p>{padNumber(episode.id)}</p>
               </div>
               <div className="content">
                 <div className="header">
-                  <p>{item.name}</p>
+                  <p>{episode.name}</p>
                 </div>
 
-                <p>{item.characters.length} personagens presentes</p>
+                <p>{episode.characters.length} personagens presentes</p>
 
-                <p>{formatDate(item.air_date)}</p>
+                <p>{formatDate(episode.air_date)}</p>
               </div>
             </Card>
           </Link>
         ))}
       </motion.div>
+      <Pagination
+        pagination={paginationInfo}
+        setPaginationInfo={setPaginationInfo}
+      />
     </Container>
   );
 };
