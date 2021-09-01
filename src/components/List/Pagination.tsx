@@ -18,7 +18,14 @@ const Pagination = ({ pagination, setPaginationInfo }: Props) => {
     <PaginationWrapper>
       {Array.from({ length: pagination.pages }, (v, k) => k).map(
         (i: number) => {
-          return <div onClick={() => onNumberClick(i + 1)}>{i + 1}</div>;
+          return (
+            <div
+              className={i + 1 === pagination.current ? "active" : ""}
+              onClick={() => onNumberClick(i + 1)}
+            >
+              {i + 1}
+            </div>
+          );
         }
       )}
     </PaginationWrapper>

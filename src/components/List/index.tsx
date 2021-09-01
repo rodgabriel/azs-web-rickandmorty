@@ -7,8 +7,17 @@ import { GET_ALL_EPISODES } from "graphQL/queries";
 // helpers
 import padNumber from "helpers/padNumber";
 
+// icons
+import EyeOpen from "assets/icons/eye-open.png";
+// import EyeFull from "assets/icons/eye-full.png"
+import HeartOpen from "assets/icons/heart-open.png";
+// import HeartFull from "assets/icons/heart-full.png"
+import Calendar from "assets/icons/calendar.png";
+import Person from "assets/icons/user.png";
+
 // components
-import Pagination from "./pagination";
+import Pagination from "./Pagination";
+import Filter from "./Filter";
 import { Container, Card } from "./styles";
 
 interface Props {
@@ -61,7 +70,7 @@ const List = ({ title }: Props) => {
   const formatDate = (date: string): string => {
     return new Date(date).toLocaleDateString("pt-br", {
       day: "2-digit",
-      month: "numeric",
+      month: "2-digit",
       year: "numeric",
     });
   };
@@ -75,8 +84,13 @@ const List = ({ title }: Props) => {
     next: null,
   });
 
+  const [searchTerm, setSearchTerm] = useState("");
+
   const { loading, data } = useQuery(GET_ALL_EPISODES, {
-    variables: { page: paginationInfo.current },
+    variables: {
+      page: searchTerm ? 0 : paginationInfo.current,
+      filter: searchTerm,
+    },
   });
 
   useEffect(() => {
@@ -93,18 +107,17 @@ const List = ({ title }: Props) => {
     }
   }, [data]);
 
-  console.log(data?.episodes?.info);
-
   return (
     <Container
       initial={initial}
       animate={animate}
       transition={{
-        duration: 0.3,
+        duration: 0.1,
         ease: "easeIn",
       }}
     >
       <h1>{title}</h1>
+      <Filter searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <motion.div
         className="cards-wrapper"
         variants={container}
@@ -112,22 +125,33 @@ const List = ({ title }: Props) => {
         animate="show"
       >
         {allEpisodes.map((episode) => (
-          <Link to={`/episode/${episode.id}`}>
-            <Card variants={child}>
-              <div className="ep-number">
-                <p>{padNumber(episode.id)}</p>
-              </div>
-              <div className="content">
+          <Card variants={child} index={episode.id}>
+            <div className="content">
+              <Link to={`/episode/${episode.id}`}>
                 <div className="header">
-                  <p>{episode.name}</p>
+                  <div className="ep-number">
+                    <p>{padNumber(episode.id)}</p>
+                  </div>
+                  <div className="title">
+                    <p>{episode.name}</p>
+                  </div>
                 </div>
+              </Link>
+              <div className="personagens">
+                <img src={Person} alt="" />
+                <p>{episode.characters.length} personagens</p>
+              </div>
 
-                <p>{episode.characters.length} personagens presentes</p>
-
+              <div className="data-exibicao">
+                <img src={Calendar} alt="" />
                 <p>{formatDate(episode.air_date)}</p>
               </div>
-            </Card>
-          </Link>
+            </div>
+            <div className="actions">
+              <img src={EyeOpen} alt="Seen button" />
+              <img src={HeartOpen} alt="Like button" />
+            </div>
+          </Card>
         ))}
       </motion.div>
       <Pagination

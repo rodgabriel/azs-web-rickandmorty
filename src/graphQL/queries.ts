@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const GET_ALL_EPISODES = gql`
-  query getAllEpisodes($page: Int) {
-    episodes(page: $page) {
+  query getAllEpisodes($page: Int, $filter: String) {
+    episodes(page: $page, filter: { name: $filter }) {
       info {
         count
         pages
