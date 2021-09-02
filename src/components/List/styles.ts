@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import { motion } from "framer-motion";
 
-export const Container = styled(motion.div)`
+export const Container = styled.div`
   height: auto;
   min-height: 100vh;
   width: 100vw;
@@ -16,7 +15,7 @@ export const Container = styled(motion.div)`
     margin: 2rem 0 2rem 2rem;
 
     @media (max-width: 414px) {
-      margin: 0 0 4rem;
+      margin: 0 1rem 4rem;
     }
   }
 
@@ -45,10 +44,11 @@ export const Container = styled(motion.div)`
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 2rem;
+    gap: 4rem;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     margin: 0 auto;
+    padding: 2rem;
   }
 
   @media (max-width: 414px) {
@@ -57,6 +57,7 @@ export const Container = styled(motion.div)`
     .cards-wrapper {
       justify-content: center;
       align-items: center;
+      padding: 0;
     }
   }
 `;
@@ -74,8 +75,8 @@ interface CardProps {
   index: string;
 }
 
-export const Card = styled(motion.div)<CardProps>`
-  width: 44rem;
+export const Card = styled.div<CardProps>`
+  width: 30%;
   min-width: 28rem;
   max-width: 80vw;
   height: 12rem;
@@ -88,13 +89,25 @@ export const Card = styled(motion.div)<CardProps>`
     }};
   border-radius: 0.4rem;
   padding: 1.5rem;
-  box-shadow: 0 3px 18px -3px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 3px 18px -3px rgba(0, 0, 0, 0.1);
   transition: all 0.2s cubic-bezier(0.445, 0.05, 0.55, 0.95);
   color: black;
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
   position: relative;
+
+  @media (max-width: 1039px) {
+    width: 45%;
+  }
+
+  @media (max-width: 720px) {
+    width: 100%;
+  }
+
+  @media (max-width: 400px) {
+    width: 100%;
+  }
 
   div.content {
     display: flex;
@@ -220,7 +233,7 @@ export const FilterWrapper = styled.div`
   > input {
     font-size: 1.8rem;
     letter-spacing: 0.15rem;
-    padding: 1.6rem 6rem 1.6rem 1rem;
+    padding: 1.6rem 6rem 1.6rem 0;
     width: 100%;
     border: none;
     border-bottom: 2px solid ${(props) => props.theme.pallete.base};
@@ -258,6 +271,6 @@ export const FilterWrapper = styled.div`
   }
 
   @media (max-width: 414px) {
-    margin: 0 0 4rem;
+    margin: 0 1rem 4rem;
   }
 `;

@@ -12,6 +12,7 @@ import QuestionIcon from "assets/icons/question.png";
 import CalendarIcon from "assets/icons/calendar.png";
 import MonsterIcon from "assets/icons/monster.png";
 import SeenLiked from "components/SeenLiked";
+import LoadingEpisode from "components/LoadingSkeleton/LoadingEpisode";
 
 interface EpisodeType {
   name: string;
@@ -38,64 +39,70 @@ const Episode = () => {
     unknown: "Desconhecido",
   };
 
-  return episode?.name ? (
+  return (
     <Container>
-      <div className="episode-header">
-        <div className="ep-number">
-          <strong>{episode.id}</strong>
-        </div>
-        <div className="episode actions">
-          <SeenLiked episodeId={episode.id} colorMode="light" />
-        </div>
-      </div>
-      <div className="content">
-        <h1>{episode.name}</h1>
-        <div className="date-info">
-          <p>Data de exibição:</p>
-          <div className="data">
-            <img src={CalendarIcon} alt="" />
-            <p>{formatDate(episode.air_date, "long")}</p>
+      {loading ? (
+        <LoadingEpisode />
+      ) : episode?.name ? (
+        <>
+          <div className="episode-header">
+            <div className="ep-number">
+              <strong>{episode.id}</strong>
+            </div>
+            <div className="episode actions">
+              <SeenLiked episodeId={episode.id} colorMode="light" />
+            </div>
           </div>
-        </div>
+          <div className="content">
+            <h1>{episode.name}</h1>
+            <div className="date-info">
+              <p>Data de exibição:</p>
+              <div className="data">
+                <img src={CalendarIcon} alt="" />
+                <p>{formatDate(episode.air_date, "long")}</p>
+              </div>
+            </div>
 
-        <div className="characters-container">
-          <h2>Personagens:</h2>
-          <div className="characters-card-wrapper">
-            {episode.characters.map((character) => (
-              <CharacterCard index={character.id}>
-                <BackgroundImg src={character.image} alt="" />
+            <div className="characters-container">
+              <h2>Personagens:</h2>
+              <div className="characters-card-wrapper">
+                {episode.characters.map((character) => (
+                  <CharacterCard index={character.id}>
+                    <BackgroundImg src={character.image} alt="" />
 
-                <div className="content">
-                  <p className="char-name">{character.name}</p>
-                  <div className="char-species">
-                    <img src={MonsterIcon} alt="" />
-                    <p>
-                      {character.species === "Human"
-                        ? "Humano"
-                        : character.species}
-                    </p>
-                  </div>
-                  <div className="char-status">
-                    <img
-                      src={
-                        character.status === "Alive"
-                          ? AliveIcon
-                          : character.status === "Dead"
-                          ? DeadIcon
-                          : QuestionIcon
-                      }
-                      alt=""
-                    />
-                    <p>{status[character.status]}</p>
-                  </div>
-                </div>
-              </CharacterCard>
-            ))}
+                    <div className="content">
+                      <p className="char-name">{character.name}</p>
+                      <div className="char-species">
+                        <img src={MonsterIcon} alt="" />
+                        <p>
+                          {character.species === "Human"
+                            ? "Humano"
+                            : character.species}
+                        </p>
+                      </div>
+                      <div className="char-status">
+                        <img
+                          src={
+                            character.status === "Alive"
+                              ? AliveIcon
+                              : character.status === "Dead"
+                              ? DeadIcon
+                              : QuestionIcon
+                          }
+                          alt=""
+                        />
+                        <p>{status[character.status]}</p>
+                      </div>
+                    </div>
+                  </CharacterCard>
+                ))}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </>
+      ) : null}
     </Container>
-  ) : null;
+  );
 };
 
 export default Episode;

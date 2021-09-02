@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { DocumentNode, QueryHookOptions, useQuery } from "@apollo/client";
 import { GET_ALL_EPISODES, GET_EPISODES_BY_IDS } from "graphQL/queries";
@@ -13,6 +12,7 @@ import Calendar from "assets/icons/calendar.png";
 import Person from "assets/icons/user.png";
 
 // components
+import LoadingList from "components/LoadingSkeleton/LoadingList";
 import Pagination from "./Pagination";
 import Filter from "./Filter";
 import { Container, Card } from "./styles";
@@ -36,33 +36,6 @@ export type TPagination = {
   prev: number | null;
   next: number | null;
   count: number;
-};
-
-const initial = {
-  opacity: 0,
-  scale: 0.975,
-  y: 150,
-};
-
-const animate = {
-  opacity: 1,
-  scale: 1,
-  y: 0,
-};
-
-const container = {
-  hidden: { opacity: 1 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-const child = {
-  hidden: { opacity: 0, y: 100 },
-  show: { opacity: 1, y: 0 },
 };
 
 const List = ({ title }: Props) => {
@@ -154,14 +127,7 @@ const List = ({ title }: Props) => {
   }, [data, showLikedEpisodes, showSeenEpisodes]);
 
   return (
-    <Container
-      initial={initial}
-      animate={animate}
-      transition={{
-        duration: 0.1,
-        ease: "easeIn",
-      }}
-    >
+    <Container>
       <h1>{title}</h1>
       <Filter searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <div className="filtragem">
@@ -185,43 +151,42 @@ const List = ({ title }: Props) => {
           Vistos
         </button>
       </div>
-      <motion.div
-        className="cards-wrapper"
-        variants={container}
-        initial="hidden"
-        animate="show"
-      >
-        {allEpisodes.map((episode) => {
-          return (
-            <Card variants={child} index={episode.id}>
-              <div className="content">
-                <Link to={`/episode/${episode.id}`}>
-                  <div className="header">
-                    <div className="ep-number">
-                      <p>{padNumber(episode.id)}</p>
+      {loading ? (
+        <LoadingList />
+      ) : (
+        <div className="cards-wrapper">
+          {allEpisodes.map((episode) => {
+            return (
+              <Card index={episode.id}>
+                <div className="content">
+                  <Link to={`/episode/${episode.id}`}>
+                    <div className="header">
+                      <div className="ep-number">
+                        <p>{padNumber(episode.id)}</p>
+                      </div>
+                      <div className="title">
+                        <p>{episode.name}</p>
+                      </div>
                     </div>
-                    <div className="title">
-                      <p>{episode.name}</p>
-                    </div>
+                  </Link>
+                  <div className="personagens">
+                    <img src={Person} alt="" />
+                    <p>{episode.characters.length} personagens</p>
                   </div>
-                </Link>
-                <div className="personagens">
-                  <img src={Person} alt="" />
-                  <p>{episode.characters.length} personagens</p>
-                </div>
 
-                <div className="data-exibicao">
-                  <img src={Calendar} alt="" />
-                  <p>{formatDate(episode.air_date, "2-digit")}</p>
+                  <div className="data-exibicao">
+                    <img src={Calendar} alt="" />
+                    <p>{formatDate(episode.air_date, "2-digit")}</p>
+                  </div>
                 </div>
-              </div>
-              <div className="list actions">
-                <SeenLiked episodeId={episode.id} colorMode="dark" />
-              </div>
-            </Card>
-          );
-        })}
-      </motion.div>
+                <div className="list actions">
+                  <SeenLiked episodeId={episode.id} colorMode="dark" />
+                </div>
+              </Card>
+            );
+          })}
+        </div>
+      )}
       {showAllEpisodes && (
         <Pagination
           pagination={paginationInfo}
