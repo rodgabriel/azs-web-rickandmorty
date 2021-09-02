@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { useQuery } from "@apollo/client";
-import { GET_ALL_EPISODES } from "graphQL/queries";
+import { DocumentNode, QueryHookOptions, useQuery } from "@apollo/client";
+import { GET_ALL_EPISODES, GET_EPISODES_BY_IDS } from "graphQL/queries";
 
 // helpers
 import padNumber from "helpers/padNumber";
@@ -17,6 +17,7 @@ import Pagination from "./Pagination";
 import Filter from "./Filter";
 import { Container, Card } from "./styles";
 import SeenLiked from "components/SeenLiked";
+import { useEpsContext } from "context/useContext";
 
 interface Props {
   title?: string;
@@ -66,6 +67,9 @@ const child = {
 
 const List = ({ title }: Props) => {
   const [allEpisodes, setAllEpisodes] = useState<Array<Episode>>([]);
+  const [showAllEpisodes, setShowAllEpisodes] = useState(true);
+  const [showLikedEpisodes, setShowLikedEpisodes] = useState(false);
+  const [showSeenEpisodes, setShowSeenEpisodes] = useState(false);
   const [paginationInfo, setPaginationInfo] = useState<TPagination>({
     current: 1,
     count: 0,
@@ -73,29 +77,81 @@ const List = ({ title }: Props) => {
     prev: null,
     next: null,
   });
+  const { favoriteEps, seenEps } = useEpsContext();
 
   const [searchTerm, setSearchTerm] = useState("");
 
-  const { loading, data } = useQuery(GET_ALL_EPISODES, {
-    variables: {
-      page: searchTerm ? 0 : paginationInfo.current,
-      filter: searchTerm,
-    },
-  });
+  const determineQuery = (): DocumentNode => {
+    if (showAllEpisodes) {
+      return GET_ALL_EPISODES;
+    }
+
+    return GET_EPISODES_BY_IDS;
+  };
+
+  const determineVariables = (): QueryHookOptions => {
+    if (showLikedEpisodes) {
+      return {
+        variables: {
+          ids: favoriteEps.join(","),
+        },
+      };
+    }
+
+    if (showSeenEpisodes) {
+      return {
+        variables: {
+          ids: seenEps.join(","),
+        },
+      };
+    }
+
+    return {
+      variables: {
+        page: searchTerm ? 0 : paginationInfo.current,
+        filter: searchTerm,
+      },
+    };
+  };
+
+  const { loading, data } = useQuery(determineQuery(), determineVariables());
+
+  const onFilterTodos = () => {
+    setShowAllEpisodes(true);
+    setShowLikedEpisodes(false);
+    setShowSeenEpisodes(false);
+  };
+
+  const onFilterLikedEpisodes = () => {
+    setShowAllEpisodes(false);
+    setShowLikedEpisodes(true);
+    setShowSeenEpisodes(false);
+  };
+  const onFilterSeenEpisodes = () => {
+    setShowAllEpisodes(false);
+    setShowLikedEpisodes(false);
+    setShowSeenEpisodes(true);
+  };
 
   useEffect(() => {
-    if (data?.episodes) {
-      setAllEpisodes(data.episodes.results);
+    if (showLikedEpisodes || showSeenEpisodes) {
+      if (data?.episodesByIds) {
+        setAllEpisodes(data.episodesByIds);
+      }
+    } else {
+      if (data?.episodes) {
+        setAllEpisodes(data.episodes.results);
+      }
+      if (data?.episodes.info) {
+        setPaginationInfo({
+          ...data.episodes.info,
+          current: data.episodes.info.next
+            ? data.episodes.info.next - 1
+            : data.episodes.info.pages,
+        });
+      }
     }
-    if (data?.episodes.info) {
-      setPaginationInfo({
-        ...data.episodes.info,
-        current: data.episodes.info.next
-          ? data.episodes.info.next - 1
-          : data.episodes.info.pages,
-      });
-    }
-  }, [data]);
+  }, [data, showLikedEpisodes, showSeenEpisodes]);
 
   return (
     <Container
@@ -108,6 +164,12 @@ const List = ({ title }: Props) => {
     >
       <h1>{title}</h1>
       <Filter searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <div className="filtragem">
+        <p>Filtrar por: </p>
+        <button onClick={onFilterTodos}>Todos</button>
+        <button onClick={onFilterLikedEpisodes}>Favoritos</button>
+        <button onClick={onFilterSeenEpisodes}>Vistos</button>
+      </div>
       <motion.div
         className="cards-wrapper"
         variants={container}
@@ -145,10 +207,12 @@ const List = ({ title }: Props) => {
           );
         })}
       </motion.div>
-      <Pagination
-        pagination={paginationInfo}
-        setPaginationInfo={setPaginationInfo}
-      />
+      {showAllEpisodes && (
+        <Pagination
+          pagination={paginationInfo}
+          setPaginationInfo={setPaginationInfo}
+        />
+      )}
     </Container>
   );
 };

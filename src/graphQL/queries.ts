@@ -21,6 +21,19 @@ export const GET_ALL_EPISODES = gql`
   }
 `;
 
+export const GET_EPISODES_BY_IDS = gql`
+  query getEpisodesByIds($ids: [ID!]!) {
+    episodesByIds(ids: $ids) {
+      id
+      name
+      air_date
+      characters {
+        id
+      }
+    }
+  }
+`;
+
 export const GET_EPISODE_BY_ID = (id: string) => {
   return gql`
         query {
