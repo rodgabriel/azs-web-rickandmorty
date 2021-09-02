@@ -9,7 +9,7 @@ export const Container = styled(motion.div)`
   flex-direction: column;
   margin-top: 4rem;
   padding: 4rem;
-  background: #fff;
+  background: #f9fff9;
   color: ${(props) => props.theme.pallete.base};
 
   h1 {
@@ -41,15 +41,13 @@ export const Container = styled(motion.div)`
 `;
 
 const colors: { [key: string]: string } = {
-  0: "#FAC9F5",
-  1: "#FAC945",
-  2: "#EF6CBA",
-  3: "#9F74F3",
-  4: "#5F9EEC",
-  5: "#5FDF9C",
+  0: "#FAC9F566",
+  1: "#FAC94566",
+  2: "#EF6CBA66",
+  3: "#9F74F366",
+  4: "#5F9EEC66",
+  5: "#5FDF9C66",
 };
-
-// const colors = ["#FAC945", "#EF6CBA", "#9F74F3", "#5F9EEC"];
 
 interface CardProps {
   index: string;
@@ -60,11 +58,13 @@ export const Card = styled(motion.div)<CardProps>`
   min-width: 28rem;
   max-width: 80vw;
   height: 12rem;
-  background: ${(props) => {
-    return Number(props.index[props.index.length - 1]) >= 6
-      ? colors[String(Number(props.index[props.index.length - 1]) - 4)]
-      : colors[props.index[props.index.length - 1]];
-  }};
+  background: white;
+  border-bottom: 6px solid
+    ${(props) => {
+      return Number(props.index[props.index.length - 1]) >= 6
+        ? colors[String(Number(props.index[props.index.length - 1]) - 4)]
+        : colors[props.index[props.index.length - 1]];
+    }};
   border-radius: 0.4rem;
   padding: 1.5rem;
   box-shadow: 0 3px 18px -3px rgba(0, 0, 0, 0.25);
@@ -138,17 +138,10 @@ export const Card = styled(motion.div)<CardProps>`
     }
   }
 
-  div.actions {
-    display: flex;
+  .list.actions {
     position: absolute;
-    bottom: 1.2rem;
-    right: 2.4rem;
-
-    > img {
-      width: 2rem;
-      margin-left: 2rem;
-      cursor: pointer;
-    }
+    bottom: 0.5rem;
+    right: 1rem;
   }
 
   p {
@@ -209,7 +202,7 @@ export const FilterWrapper = styled.div`
     padding: 1.6rem 6rem 1.6rem 1rem;
     width: 100%;
     border: none;
-    border-bottom: 2px solid ${(props) => props.theme.pallete.secondary};
+    border-bottom: 2px solid ${(props) => props.theme.pallete.base};
     background: #fff0;
     // box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
     color: ${(props) => props.theme.pallete.base};

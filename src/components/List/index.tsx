@@ -6,12 +6,9 @@ import { GET_ALL_EPISODES } from "graphQL/queries";
 
 // helpers
 import padNumber from "helpers/padNumber";
+import formatDate from "helpers/formatDate";
 
 // icons
-import EyeOpen from "assets/icons/eye-open.png";
-// import EyeFull from "assets/icons/eye-full.png"
-import HeartOpen from "assets/icons/heart-open.png";
-// import HeartFull from "assets/icons/heart-full.png"
 import Calendar from "assets/icons/calendar.png";
 import Person from "assets/icons/user.png";
 
@@ -19,6 +16,7 @@ import Person from "assets/icons/user.png";
 import Pagination from "./Pagination";
 import Filter from "./Filter";
 import { Container, Card } from "./styles";
+import SeenLiked from "components/SeenLiked";
 
 interface Props {
   title?: string;
@@ -67,14 +65,6 @@ const child = {
 };
 
 const List = ({ title }: Props) => {
-  const formatDate = (date: string): string => {
-    return new Date(date).toLocaleDateString("pt-br", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
-  };
-
   const [allEpisodes, setAllEpisodes] = useState<Array<Episode>>([]);
   const [paginationInfo, setPaginationInfo] = useState<TPagination>({
     current: 1,
@@ -124,35 +114,36 @@ const List = ({ title }: Props) => {
         initial="hidden"
         animate="show"
       >
-        {allEpisodes.map((episode) => (
-          <Card variants={child} index={episode.id}>
-            <div className="content">
-              <Link to={`/episode/${episode.id}`}>
-                <div className="header">
-                  <div className="ep-number">
-                    <p>{padNumber(episode.id)}</p>
+        {allEpisodes.map((episode) => {
+          return (
+            <Card variants={child} index={episode.id}>
+              <div className="content">
+                <Link to={`/episode/${episode.id}`}>
+                  <div className="header">
+                    <div className="ep-number">
+                      <p>{padNumber(episode.id)}</p>
+                    </div>
+                    <div className="title">
+                      <p>{episode.name}</p>
+                    </div>
                   </div>
-                  <div className="title">
-                    <p>{episode.name}</p>
-                  </div>
+                </Link>
+                <div className="personagens">
+                  <img src={Person} alt="" />
+                  <p>{episode.characters.length} personagens</p>
                 </div>
-              </Link>
-              <div className="personagens">
-                <img src={Person} alt="" />
-                <p>{episode.characters.length} personagens</p>
-              </div>
 
-              <div className="data-exibicao">
-                <img src={Calendar} alt="" />
-                <p>{formatDate(episode.air_date)}</p>
+                <div className="data-exibicao">
+                  <img src={Calendar} alt="" />
+                  <p>{formatDate(episode.air_date, "2-digit")}</p>
+                </div>
               </div>
-            </div>
-            <div className="actions">
-              <img src={EyeOpen} alt="Seen button" />
-              <img src={HeartOpen} alt="Like button" />
-            </div>
-          </Card>
-        ))}
+              <div className="list actions">
+                <SeenLiked episodeId={episode.id} colorMode="dark" />
+              </div>
+            </Card>
+          );
+        })}
       </motion.div>
       <Pagination
         pagination={paginationInfo}

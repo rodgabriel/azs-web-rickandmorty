@@ -4,6 +4,7 @@ import { ApolloProvider } from "@apollo/client";
 import { ThemeProvider } from "styled-components";
 
 import { client } from "graphQL/client";
+import { EpsContextProvider } from "context/useContext";
 
 // styles
 import GlobalStyles from "styles/global";
@@ -16,7 +17,9 @@ ReactDOM.render(
     <ApolloProvider client={client}>
       <ThemeProvider theme={theme}>
         <GlobalStyles />
-        <App />
+        <EpsContextProvider>
+          <App />
+        </EpsContextProvider>
       </ThemeProvider>
     </ApolloProvider>
   </React.StrictMode>,
