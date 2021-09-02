@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 
 interface ProviderProps {
   children: ReactNode;
@@ -14,8 +20,23 @@ interface IEpsContext {
 const EpsContext = createContext<IEpsContext | undefined>({} as IEpsContext);
 
 export const EpsContextProvider: React.FC<ProviderProps> = ({ children }) => {
-  const [favoriteEps, setFavoriteEps] = useState<Array<string>>([]);
-  const [seenEps, setSeenEps] = useState<Array<string>>([]);
+  const favoriteEpsFromStorage = localStorage.getItem("rickandmorty:likedeps");
+  const seenEpsFromStorage = localStorage.getItem("rickandmorty:seeneps");
+
+  const [favoriteEps, setFavoriteEps] = useState<Array<string>>(
+    JSON.parse(favoriteEpsFromStorage as string) || []
+  );
+  const [seenEps, setSeenEps] = useState<Array<string>>(
+    JSON.parse(seenEpsFromStorage as string) || []
+  );
+
+  useEffect(() => {
+    localStorage.setItem("rickandmorty:likedeps", JSON.stringify(favoriteEps));
+  }, [favoriteEps]);
+
+  useEffect(() => {
+    localStorage.setItem("rickandmorty:seeneps", JSON.stringify(seenEps));
+  }, [seenEps]);
 
   const saveFavoriteEps = (episode: string) => {
     if (favoriteEps.includes(episode)) {
@@ -23,7 +44,6 @@ export const EpsContextProvider: React.FC<ProviderProps> = ({ children }) => {
       return setFavoriteEps(newFaveEps);
     }
     setFavoriteEps((eps) => [...eps, episode]);
-    // TODO save localstorage
   };
 
   const saveSeenEps = (episode: string) => {
@@ -32,7 +52,6 @@ export const EpsContextProvider: React.FC<ProviderProps> = ({ children }) => {
       return setSeenEps(newSeenEps);
     }
     setSeenEps((eps) => [...eps, episode]);
-    // TODO save localstorage
   };
 
   return (
