@@ -11,6 +11,32 @@ export const Container = styled.div`
     padding: 2rem;
   }
 
+  .back-arrow {
+    margin-bottom: 2rem;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    transition: 0.3s all ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    button {
+      font-size: 3.5rem;
+      font-weight: bold;
+      margin-top: -10px;
+      border: none;
+      background: transparent;
+      color: ${(props) => props.theme.pallete.light};
+      cursor: pointer;
+    }
+
+    &:hover {
+      background: #eee6;
+      cursor: pointer;
+    }
+  }
+
   .episode-header {
     display: flex;
     .ep-number {

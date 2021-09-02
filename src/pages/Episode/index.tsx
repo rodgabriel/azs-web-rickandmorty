@@ -13,6 +13,7 @@ import CalendarIcon from "assets/icons/calendar.png";
 import MonsterIcon from "assets/icons/monster.png";
 import SeenLiked from "components/SeenLiked";
 import LoadingEpisode from "components/LoadingSkeleton/LoadingEpisode";
+import { Link } from "react-router-dom";
 
 interface EpisodeType {
   name: string;
@@ -39,12 +40,21 @@ const Episode = () => {
     unknown: "Desconhecido",
   };
 
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, []);
+
   return (
     <Container>
       {loading ? (
         <LoadingEpisode />
       ) : episode?.name ? (
         <>
+          <div className="back-arrow">
+            <Link to="/#episodes-list">
+              <button>&#8592;</button>
+            </Link>
+          </div>
           <div className="episode-header">
             <div className="ep-number">
               <strong>{episode.id}</strong>
