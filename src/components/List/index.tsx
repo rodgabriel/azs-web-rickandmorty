@@ -166,9 +166,24 @@ const List = ({ title }: Props) => {
       <Filter searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <div className="filtragem">
         <p>Filtrar por: </p>
-        <button onClick={onFilterTodos}>Todos</button>
-        <button onClick={onFilterLikedEpisodes}>Favoritos</button>
-        <button onClick={onFilterSeenEpisodes}>Vistos</button>
+        <button
+          className={showAllEpisodes ? "active" : ""}
+          onClick={onFilterTodos}
+        >
+          Todos
+        </button>
+        <button
+          className={showLikedEpisodes ? "active" : ""}
+          onClick={onFilterLikedEpisodes}
+        >
+          Favoritos
+        </button>
+        <button
+          className={showSeenEpisodes ? "active" : ""}
+          onClick={onFilterSeenEpisodes}
+        >
+          Vistos
+        </button>
       </div>
       <motion.div
         className="cards-wrapper"

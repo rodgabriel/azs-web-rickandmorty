@@ -93,7 +93,7 @@ const colors: { [key: string]: string } = {
 
 export const CharacterCard = styled.div<CardProps>`
   width: 24rem;
-  height: 26rem;
+  height: 28rem;
   border-radius: 1rem;
   background: ${(props) => props.theme.pallete.light};
   color: ${(props) => props.theme.pallete.base};
@@ -116,11 +116,11 @@ export const CharacterCard = styled.div<CardProps>`
     .char-name {
       font-size: 1.8rem;
       font-weight: bold;
-      margin-bottom: 0.5rem;
+      margin-bottom: 1rem;
     }
 
     .char-species {
-      margin-bottom: 0.5rem;
+      margin-bottom: 1rem;
       width: fit-content;
       display: flex;
       justify-content: center;
@@ -140,6 +140,8 @@ export const CharacterCard = styled.div<CardProps>`
       img {
         width: 2.2rem;
         margin-right: 1.1rem;
+        filter: invert(51%) sepia(53%) saturate(1486%) hue-rotate(348deg)
+          brightness(99%) contrast(93%);
       }
     }
   }

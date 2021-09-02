@@ -20,6 +20,27 @@ export const Container = styled(motion.div)`
     }
   }
 
+  .filtragem {
+    margin: 2rem 0 2rem 2rem;
+    > button {
+      background: transparent;
+      border: none;
+      margin: 1rem 2rem 0 0;
+      transition: 0.2s all ease-in-out;
+      font-size: 1.6rem;
+
+      &.active {
+        font-weight: bold;
+        text-decoration: underline;
+      }
+
+      &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+  }
+
   .cards-wrapper {
     display: flex;
     flex-direction: row;
