@@ -52,7 +52,7 @@ Suíte de testes utilizando [Cypress](https://www.cypress.io/).
 yarn cypress
 ```
 
-![Suíte de testes](./github/tests-suite.png)
+![Suíte de testes](./github/test-suite.PNG)
 
 
     
