@@ -48,7 +48,7 @@ Suíte de testes utilizando [Cypress](https://www.cypress.io/).
 
 **Com o projeto rodando** execute o seguinte comando para rodar a suíte de testes do cypress:
 ```shell
-> azs-web-rickandmorty
+> azs-web-rickandmorty/
 yarn cypress
 ```
 
