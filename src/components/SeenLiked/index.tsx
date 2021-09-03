@@ -31,6 +31,7 @@ const SeenLiked = ({ episodeId, colorMode }: Props) => {
   return (
     <Container colorMode={colorMode}>
       <button
+        data-cy={`seen-${episodeId}`}
         className={`img-wrapper ${seen ? "seen" : ""}`}
         onClick={() => onSeenEpClick(episodeId)}
       >
@@ -41,6 +42,7 @@ const SeenLiked = ({ episodeId, colorMode }: Props) => {
         />
       </button>
       <button
+        data-cy={`liked-${episodeId}`}
         className={`img-wrapper ${liked ? "liked" : ""}`}
         onClick={() => onFaveEpClick(episodeId)}
       >

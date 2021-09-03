@@ -13,6 +13,7 @@ const Filter = ({ searchTerm, setSearchTerm }: Props) => {
   return (
     <FilterWrapper>
       <input
+        data-cy="search-episode"
         type="text"
         placeholder="Pesquisar episódio por nome"
         value={searchTerm}

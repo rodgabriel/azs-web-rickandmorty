@@ -14,7 +14,7 @@ const Hero = ({ goToEpisodesList }: Props) => {
     <Container>
       <ImgLogo src={Logo} margin="1rem auto" />
       <div className="down-arrow">
-        <button onClick={goToEpisodesList}>
+        <button onClick={goToEpisodesList} data-cy="goToEpisodesList">
           <img src={DownArrow} alt="Acesse a seção de Episódios" />
         </button>
       </div>

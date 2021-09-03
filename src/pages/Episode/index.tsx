@@ -51,7 +51,7 @@ const Episode = () => {
       ) : episode?.name ? (
         <>
           <div className="back-arrow">
-            <Link to="/#episodes-list">
+            <Link to="/#episodes-list" data-cy="back-home">
               <button>&#8592;</button>
             </Link>
           </div>

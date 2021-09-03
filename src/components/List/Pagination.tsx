@@ -20,6 +20,7 @@ const Pagination = ({ pagination, setPaginationInfo }: Props) => {
         (i: number) => {
           return (
             <div
+              data-cy={`page-${i + 1}`}
               className={i + 1 === pagination.current ? "active" : ""}
               onClick={() => onNumberClick(i + 1)}
             >

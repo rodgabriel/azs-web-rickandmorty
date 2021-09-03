@@ -134,18 +134,21 @@ const List = ({ title, listRef }: Props) => {
       <div className="filtragem">
         <p>Filtrar por: </p>
         <button
+          data-cy="filter-all"
           className={showAllEpisodes ? "active" : ""}
           onClick={onFilterTodos}
         >
           Todos
         </button>
         <button
+          data-cy="filter-liked"
           className={showLikedEpisodes ? "active" : ""}
           onClick={onFilterLikedEpisodes}
         >
           Favoritos
         </button>
         <button
+          data-cy="filter-seen"
           className={showSeenEpisodes ? "active" : ""}
           onClick={onFilterSeenEpisodes}
         >
@@ -160,7 +163,7 @@ const List = ({ title, listRef }: Props) => {
             return (
               <Card index={episode.id}>
                 <div className="content">
-                  <Link to={`/episode/${episode.id}`}>
+                  <Link to={`/episode/${episode.id}`} data-cy="link-episode">
                     <div className="header">
                       <div className="ep-number">
                         <p>{padNumber(episode.id)}</p>
