@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { DocumentNode, QueryHookOptions, useQuery } from "@apollo/client";
 import { GET_ALL_EPISODES, GET_EPISODES_BY_IDS } from "graphQL/queries";
+import { useEpsContext } from "context/useContext";
 
 // helpers
 import padNumber from "helpers/padNumber";
@@ -17,11 +18,10 @@ import Pagination from "./Pagination";
 import Filter from "./Filter";
 import { Container, Card } from "./styles";
 import SeenLiked from "components/SeenLiked";
-import { useEpsContext } from "context/useContext";
-import { useRef } from "react";
 
 interface Props {
   title?: string;
+  listRef: React.RefObject<HTMLDivElement>;
 }
 
 type Episode = {
@@ -39,7 +39,7 @@ export type TPagination = {
   count: number;
 };
 
-const List = ({ title }: Props) => {
+const List = ({ title, listRef }: Props) => {
   const [allEpisodes, setAllEpisodes] = useState<Array<Episode>>([]);
   const [showAllEpisodes, setShowAllEpisodes] = useState(true);
   const [showLikedEpisodes, setShowLikedEpisodes] = useState(false);
@@ -127,23 +127,8 @@ const List = ({ title }: Props) => {
     }
   }, [data, showLikedEpisodes, showSeenEpisodes]);
 
-  const containerRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const { hash } = window.location;
-    if (hash === "#episodes-list") {
-      setTimeout(() => {
-        containerRef.current?.scrollIntoView({
-          block: "start",
-          inline: "nearest",
-          behavior: "smooth",
-        });
-      }, 100);
-    }
-  }, []);
-
   return (
-    <Container ref={containerRef} id="episodes-list">
+    <Container ref={listRef} id="episodes-list">
       <h1>{title}</h1>
       <Filter searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <div className="filtragem">

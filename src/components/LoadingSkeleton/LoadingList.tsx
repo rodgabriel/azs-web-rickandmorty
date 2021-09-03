@@ -14,7 +14,17 @@ const LoadingList = () => {
   return (
     <Container>
       <div className="row">
-        {Array.from({ length: cardsPerRow }, (_, i) => i).map((i) => {
+        {Array.from({ length: cardsPerRow }, (_, i) => i).map(() => {
+          return <Skeleton width={getPercentage(cardsPerRow)} height="12rem" />;
+        })}
+      </div>
+      <div className="row">
+        {Array.from({ length: cardsPerRow }, (_, i) => i).map(() => {
+          return <Skeleton width={getPercentage(cardsPerRow)} height="12rem" />;
+        })}
+      </div>
+      <div className="row">
+        {Array.from({ length: cardsPerRow }, (_, i) => i).map(() => {
           return <Skeleton width={getPercentage(cardsPerRow)} height="12rem" />;
         })}
       </div>

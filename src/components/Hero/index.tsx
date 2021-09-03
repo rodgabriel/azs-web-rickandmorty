@@ -1,32 +1,23 @@
+import { Link } from "react-router-dom";
 import { Container, ImgLogo } from "./styles";
 
+// icons
+import DownArrow from "assets/icons/down-arrow.png";
 import Logo from "assets/images/logo.png";
 
-const Hero = () => {
-  const initialLogo = {
-    opacity: 0,
-    scale: 0.7,
-    y: 150,
-  };
+interface Props {
+  goToEpisodesList: () => void;
+}
 
-  const animateLogo = {
-    opacity: 1,
-    scale: 1,
-    y: -150,
-  };
-
+const Hero = ({ goToEpisodesList }: Props) => {
   return (
     <Container>
-      <ImgLogo
-        src={Logo}
-        margin="1rem auto"
-        initial={initialLogo}
-        animate={animateLogo}
-        transition={{
-          duration: 3,
-          ease: "easeInOut",
-        }}
-      />
+      <ImgLogo src={Logo} margin="1rem auto" />
+      <div className="down-arrow">
+        <button onClick={goToEpisodesList}>
+          <img src={DownArrow} alt="Acesse a seção de Episódios" />
+        </button>
+      </div>
     </Container>
   );
 };

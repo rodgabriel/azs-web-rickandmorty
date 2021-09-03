@@ -45,9 +45,9 @@ export const Container = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
     gap: 4rem;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-start;
-    margin: 0 auto;
+    margin: 0;
     padding: 2rem;
   }
 

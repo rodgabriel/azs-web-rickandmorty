@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { motion } from "framer-motion";
 
 export interface Props {
   width?: string;
@@ -18,7 +17,7 @@ export interface Props {
   zIndex?: number;
 }
 
-const Container = styled(motion.div)<Props>`
+const Container = styled.div<Props>`
   display: flex;
   flex: ${(props) => props.flex && props.flex};
   flex-direction: ${(props) => props.flexDirection || "row"};
