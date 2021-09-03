@@ -3,11 +3,11 @@
 Aplicação em React que consome a API de Rick and Morty e permite buscar por episódios, marcar episódios como favoritos ou vistos e detalhar informações sobre o episódio.
 
 Tecnologias utilizadas:
-    - React
-      - ApolloClient (graphql)
-      - Typescript
-      - styled-components
-      - Context API
+- React
+  - ApolloClient (graphql)
+  - Typescript
+  - styled-components
+  - Context API
       
 ## Instruções para instalação e setup
 
