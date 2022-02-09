@@ -32,13 +32,13 @@ git clone https://github.com/rodgabriel/azs-web-rickandmorty.git
 
 Acesse a pasta do projeto que você clonou e instale as depedências:
 ```shell
-> azs-web-rickandmorty/ 
+> rickandmorty/ 
 yarn
 ```
 
 Rode o projeto:
 ```shell
-> azs-web-rickandmorty/
+> rickandmorty/
 yarn start
 ```
 
@@ -48,7 +48,7 @@ Suíte de testes utilizando [Cypress](https://www.cypress.io/).
 
 **Com o projeto rodando** execute o seguinte comando para rodar a suíte de testes do cypress:
 ```shell
-> azs-web-rickandmorty/
+> rickandmorty/
 yarn cypress
 ```
 
